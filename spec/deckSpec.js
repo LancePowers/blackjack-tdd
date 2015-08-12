@@ -208,15 +208,34 @@ describe('Player BlackJack', function(){
     expect(lance.chips).toEqual(115);
     expect(book.chips).toEqual(90);
   })
+
   it('should clear hands that had blackJack', function(){
     expect(lance.hands.length).toEqual(0);
     expect(book.hands.length).toEqual(1);
   })
-
 })
 
+describe('endRound',function(){
 
-//  && she should go to the next hand
+  it('should check if there are any hands left', function(){
+    expect(game.handsRemaining()).toEqual(true);
+  })
+
+  it('should set active player to first player w/ hand', function(){
+    game.setActivePlayer();
+    expect(game.active).toEqual(1);
+  })
+
+  it('should confirm if no hands are remaining', function(){
+    book.take();
+    expect(game.handsRemaining()).not.toEqual(true);
+  })
+
+  it('should clear dealers hand if no hands left', function(){
+    expect(game.dealerHand.length).not.toEqual(true);
+  })
+})
+
 //dealer should check to see if the hand is a pair
 //  if so, player should be able to split
 //  && dealer should seperate the cards

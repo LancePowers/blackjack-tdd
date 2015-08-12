@@ -27,6 +27,14 @@ Game.prototype.deal = function() {
   // this.checkBlackJack();
 };
 
+Game.prototype.endRound = function () {
+  if(this.handsRemaining()){
+    this.setActivePlayer();
+  } else {
+    
+  }
+};
+
 Game.prototype.shuffle = function(){
   if(this.deck.cards.length < 10){
     this.deck.createCards()
@@ -37,10 +45,14 @@ Game.prototype.checkBlackJack = function () {
   if(this.dealerHand.isBlackJack()){
     this.dealerBlackJack();
   } else {
-    for (var i = 0; i < this.players.length; i++) {
-      if(this.players[i].hands[0].isBlackJack()){
-        this.players[i].win(1.5);
-      }
+    this.playerBlackJack();
+  }
+};
+
+Game.prototype.playerBlackJack = function () {
+  for (var i = 0; i < this.players.length; i++) {
+    if(this.players[i].hands[0].isBlackJack()){
+      this.players[i].win(1.5);
     }
   }
 };
@@ -64,8 +76,21 @@ Game.prototype.addHand = function (dealer) {
   var card1 = this.deck.getCard();
   var card2 = this.deck.getCard();
   var hand = new Hand(card1, card2);
-  if(dealer === undefined){this.players[this.active].hands.push(hand);}
-  else {this.dealerHand = hand;}
+  if(dealer === undefined){
+    this.players[this.active].hands.push(hand);
+  } else { this.dealerHand = hand; }
+};
+
+Game.prototype.setActivePlayer = function(){
+  for (var i = 0; i < this.players.length; i++) {
+    if(this.players[i].hasHand()){this.active = i}
+  }
+}
+
+Game.prototype.handsRemaining = function () {
+  for (var i = 0; i < this.players.length; i++) {
+    if(this.players[i].hasHand()){return true;}
+  }
 };
 
 Game.prototype.nextPlayer = function(){

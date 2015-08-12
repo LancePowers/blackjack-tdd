@@ -22,6 +22,10 @@ Player.prototype.take = function(){
   this.hands.splice(0,1);
 }
 
+Player.prototype.hasHand = function () {
+  if (this.hands.length) {return true;} 
+};
+
 Player.prototype.win = function(multiplier){
     this.chips += this.hands[0].bet * (1 + multiplier);
     this.take();
