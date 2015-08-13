@@ -69,125 +69,115 @@ describe('Player',function(){
   })
 });
 
-// // describe('Deal Functions',function(){
-//
-//   describe('new Hand', function(){
-//     it('should create a hand for the player', function(){
-//       game.addHand(0,10,0);
-//       expect(lance.hands.length).toEqual(1);
-//       expect(lance.hands[0].cards[0].value).toEqual(11);
-//       expect(lance.hands[0].cards[1].value).toEqual(10);
-//     })
-//   })
-//
-//   describe('betOnHand', function(){
-//     it('should add chips to the hand bet.', function(){
-//       lance.betOnHand();
-//       expect(lance.hands[0].bet).toEqual(20);
-//       expect(lance.chips).toEqual(80);
-//     })
-//   })
-//
-//   describe('Dealer Hand',function(){
-//     it('should start a hand for the dealer',function(){
-//       game.addHand(11,20);
-//       expect(game.dealerHand).not.toBeUndefined();
-//       expect(game.dealerHand.cards[0].value).toEqual(11);
-//       expect(game.dealerHand.cards[1].value).toEqual(10);
-//     })
-//   })
-//
-//   describe('Dealer isBlackJack', function(){
-//     it('should check the dealers hand for blackjack',function(){
-//       expect(game.dealerHand.isBlackJack()).toEqual(true);
-//       game.addHand(10,22);
-//       expect(game.dealerHand.isBlackJack()).not.toEqual(true);
-//     })
-//   })
-//   describe('Player isBlackJack', function(){
-//     it('should check the players hands for blackJack', function(){
-//       game.addHand(11,12,1);
-//       expect(lance.hands[0].isBlackJack()).toEqual(true);
-//       expect(book.hands[0].isBlackJack()).not.toEqual(true);
-//     })
-//   })
-//   describe('Player Loses', function(){
-//     it('should remove the players hand', function(){
-//       book.take();
-//       expect(book.hands).toEqual([]);
-//     })
-//   })
-//   describe('Player Pushes',function(){
-//     it('should return bet to chips and clear hand',function(){
-//       lance.tie();
-//       expect(lance.chips).toEqual(100);
-//       expect(lance.hands).toEqual([]);
-//     })
-//   })
-//   describe('Player Wins blackJack',function(){
-//     it('should add 1.5x bet to chips and take hand', function(){
-//       lance.win(1.5);
-//       expect(lance.chips).toEqual(130);
-//       expect(lance.hands).toEqual([]);
-//     })
-//   })
-//
-// })
 
-describe('Deal', function(){
-
+describe('split', function(){
   beforeEach(function(){
     game = new Game();
     game.sitDown();
     game.deal();
     lance = game.players[0];
     book = game.players[1];
+    lance.hands[0].cards[0].value = 8;
+    lance.hands[0].cards[1].value = 8;
+  })
+  it('should determine if a player has a pair', function(){
+    expect(lance.hands[0].isPair()).toEqual(true);
+    expect(book.hands[0].isPair()).not.toEqual(true);
   })
 
-  it('should create a hand for each player', function(){
-    expect(lance.hands.length).toEqual(1);
-    expect(book.hands.length).toEqual(1);
-  })
-
-  it('should set active player back to 0',function(){
-    expect(game.active).toEqual(0);
-  })
-
-  it('should create the dealer hand', function(){
-      expect(game.dealerHand).not.toBeUndefined();
-      expect(game.dealerHand.cards[0]).not.toBeUndefined();
-      expect(game.dealerHand.cards[0].value).not.toBeUndefined();
+  it('should split cards into two hands', function(){
+    game.split();
+    expect(lance.hands.length).toEqual(2);
+    expect(lance.hands[0].cards[0].value).toEqual(8);
+    expect(lance.hands[1].cards[0].value).toEqual(8);
+    expect(lance.hands[0].cards[1].image).not.toEqual(
+      lance.hands[1].cards[0].image
+    )
+    expect(lance.hands[0].bet).toEqual(10);
+    expect(lance.hands[1].bet).toEqual(10);
   })
 })
 
-describe('Dealer BlackJack', function(){
+describe('hit', function(){
   beforeEach(function(){
     game = new Game();
     game.sitDown();
     game.deal();
     lance = game.players[0];
     book = game.players[1];
-    game.dealerHand.cards[0].value = 11;
-    game.dealerHand.cards[1].value = 10;
-    lance.hands[0].cards[0].value = 11;
-    lance.hands[0].cards[1].value = 10;
-    book.hands[0].cards[0].value = 11;
-    book.hands[0].cards[0].value = 8;
-    game.checkBlackJack();
+    lance.hands[0].cards[0].value = 2;
+    lance.hands[0].cards[1].value = 8;
+    book.hands[0].cards[0].value = 10;
+    book.hands[0].cards[1].value = 10;
   })
 
-  it('should clear any hands that aren\'t BlackJack', function(){
+  it('should calculate the value of the hand',function(){
+    expect(lance.hands[0].value()).toEqual(10);
+    expect(book.hands[0].value()).toEqual(20)
+  })
+
+  it('should add a card to a hand', function(){
+    expect(lance.hands[0].cards.length).toEqual(2);
+    game.hit();
+    expect(lance.hands[0].cards.length).toEqual(3);
+  })
+
+  it('should check if a hand has an ace', function(){
+    expect(lance.hands[0].hasAce()).not.toEqual(true);
+    game.hit();
+    lance.hands[0].cards[2].value = 11;
+    expect(lance.hands[0].hasAce()).toEqual(true);
+  })
+
+  it('should change an ace to a value of 1', function(){
+    game.hit();
+    lance.hands[0].cards[2].value = 11;
+    expect(lance.hands[0].value()).toEqual(21);
+    lance.hands[0].hasAce();
+    lance.hands[0].changeAce();
+    expect(lance.hands[0].value()).toEqual(11);
+  })
+
+  it('should determine if a player hand > 21', function(){
+    game.hit();
+    lance.hands[0].cards[2].value = 11;
+    game.hit();
+    expect(lance.hands[0].value()).toBeLessThan(22);
+    game.active = 1;
+    game.hit();
+    // Not needed with Bust Function
+    // expect(book.hands[0].value()).toBeGreaterThan(21);
+  })
+
+  it('should take a players hand if they bust', function(){
+    game.active = 1;
+    book.hands[0].cards[0].value = 10;
+    book.hands[0].cards[1].value = 10;
+    game.hit();
     expect(book.hands.length).toEqual(0);
-    expect(book.chips).toEqual(90);
+    expect(lance.hands.length).toEqual(1);
   })
 
-  it('should push with any hands that are BlackJack', function(){
-    expect(lance.hands.length).toEqual(0);
-    expect(lance.chips).toEqual(100);
+  it('should move to the players next hand', function(){
+    lance.hands[0].cards[0].value = 11;
+    lance.hands[0].cards[1].value = 11;
+    game.split();
+    lance.hands[0].cards[0].value = 10;
+    lance.hands[0].cards[1].value = 10;
+    expect(game.active).toEqual(0);
+    expect(lance.hands[0].value()).toBeLessThan(21);
+  })
+
+  it('should move to the next player', function(){
+    lance.hands[0].cards[0].value = 10;
+    lance.hands[0].cards[1].value = 10;
+    game.hit();
+    expect(game.active).toEqual(1);
   })
 })
 
-describe('Player BlackJack', function(){
+
+describe('stand',function(){
 
   beforeEach(function(){
     game = new Game();
@@ -195,59 +185,31 @@ describe('Player BlackJack', function(){
     game.deal();
     lance = game.players[0];
     book = game.players[1];
-    game.dealerHand.cards[0].value = 11;
-    game.dealerHand.cards[1].value = 8;
-    lance.hands[0].cards[0].value = 11;
-    lance.hands[0].cards[1].value = 10;
-    book.hands[0].cards[0].value = 11;
-    book.hands[0].cards[0].value = 8;
-    game.checkBlackJack();
   })
 
-  it('should pay 1.5x bet for blackJack', function(){
-    expect(lance.chips).toEqual(115);
-    expect(book.chips).toEqual(90);
-  })
-
-  it('should clear hands that had blackJack', function(){
+  it('should remove hand and store for later',function(){
+    game.stay();
     expect(lance.hands.length).toEqual(0);
-    expect(book.hands.length).toEqual(1);
-  })
-})
-
-describe('endRound',function(){
-
-  it('should check if there are any hands left', function(){
-    expect(game.handsRemaining()).toEqual(true);
+    expect(lance.stayHands.length).toEqual(1);
   })
 
-  it('should set active player to first player w/ hand', function(){
-    game.setActivePlayer();
+  it('should go to the next hand',function(){
+    expect(lance.hands.length).toEqual(1);
+    game.split();
+    game.stay();
+    expect(game.active).toEqual(0);
+    game.stay();
     expect(game.active).toEqual(1);
   })
 
-  it('should confirm if no hands are remaining', function(){
-    book.take();
-    expect(game.handsRemaining()).not.toEqual(true);
-  })
-
-  it('should clear dealers hand if no hands left', function(){
-    expect(game.dealerHand.length).not.toEqual(true);
-  })
 })
 
-//dealer should check to see if the hand is a pair
-//  if so, player should be able to split
-//  && dealer should seperate the cards
-//  && dealer should add another card to each
-//player should be able to hit
-//  if so, game should add card to his hand
-//  && game should return the sum of the card values in the hand
-//    if player's hand is more than 21
-//    game should check for aces
-//      if so, game should change ace values from 11 to 1
-//   if not. take player's chips
-//player should be able to stand
+
+describe('double', function(){
+
+})
+
+//DOUBLE
 //dealer should check if it's hand is less than 17
 //  if so, dealer should set the value a player must beat to the value of her cards
 //dealer should add a card to her hand

@@ -7,15 +7,16 @@ function Player(name){
     this.chips = 100;
     this.currentBet = 10;
     this.hands = [];
+    this.stayHands = [];
 }
 
 Player.prototype.changeBet = function(newBet) {
   this.currentBet = newBet;
 };
 
-Player.prototype.betOnHand = function(){
+Player.prototype.betOnHand = function(i){
   this.chips -= this.currentBet;
-  this.hands[0].bet += this.currentBet;
+  this.hands[i].bet += this.currentBet;
 }
 
 Player.prototype.take = function(){
@@ -23,7 +24,7 @@ Player.prototype.take = function(){
 }
 
 Player.prototype.hasHand = function () {
-  if (this.hands.length) {return true;} 
+  if (this.hands.length) {return true;}
 };
 
 Player.prototype.win = function(multiplier){
