@@ -35,7 +35,7 @@ Game.prototype.deal = function() {
 };
 
 Game.prototype.activeHands = function() {
-  return this.players[this.active].hands;
+    return this.players[this.active].hands;
 };
 
 Game.prototype.activePlayer = function(){
@@ -104,6 +104,11 @@ Game.prototype.hit = function () {
   }
 };
 
+Game.prototype.double = function () {
+  this.activePlayer().betOnHand(0);
+  this.stay();
+};
+
 Game.prototype.stay = function () {
   var hand = this.activeHands().splice(0,1);
   this.activePlayer().stayHands.push(hand[0]);
@@ -119,19 +124,35 @@ Game.prototype.endRound = function () {
   if(this.handsRemaining()){
     this.setActivePlayer();
   } else {
-
+    this.dealerTurn();
   }
 };
 
 Game.prototype.setActivePlayer = function(){
   for (var i = 0; i < this.players.length; i++) {
-    if(this.players[i].hasHand()){this.active = i}
+    if(this.players[i].hasHand()){
+      this.active = i;
+      break;
+    }
   }
 }
 
 Game.prototype.handsRemaining = function () {
   for (var i = 0; i < this.players.length; i++) {
     if(this.players[i].hasHand()){return true;}
+  }
+};
+
+Game.prototype.dealerTurn = function () {
+  this.makeDealerActive();
+  while(this.dealerHand.value() < 17){
+    this.hit();
+  }
+};
+
+Game.prototype.makeDealerActive = function () {
+  this.activeHands = function(){
+    return [this.dealerHand];
   }
 };
 

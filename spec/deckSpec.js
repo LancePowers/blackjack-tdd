@@ -207,11 +207,60 @@ describe('stand',function(){
 
 describe('double', function(){
 
+  it('should double the bet', function(){
+    game = new Game();
+    game.sitDown();
+    game.deal();
+    lance = game.players[0];
+    game.double();
+    expect(lance.stayHands[0].bet).toEqual(20);
+  })
 })
 
-//DOUBLE
+describe('dealer turn', function(){
+
+  beforeEach(function(){
+    game = new Game();
+    game.sitDown();
+    game.deal();
+    lance = game.players[0];
+    book = game.players[0];
+  })
+
+  it('should start when there are no active hands',function(){
+    game.dealerHand.cards[0].value = 10;
+    game.dealerHand.cards[1].value = 10;
+    game.stay();
+    game.stay();
+    expect(game.activeHands()[0]).toEqual(game.dealerHand);
+  })
+
+  it('should check if the dealers hand is < 17',function(){
+
+  })
+
+  it('should add a card to the hand',function(){
+
+  })
+
+  it('should check if the hand is greater than 21', function(){
+
+  })
+
+  it('should bust', function(){
+
+  })
+
+  it('should determine if a player wins',function(){
+
+  })
+
+  it('should determine if a player loses', function(){
+
+  })
+
+})
 //dealer should check if it's hand is less than 17
-//  if so, dealer should set the value a player must beat to the value of her cards
 //dealer should add a card to her hand
 //dealer should check if her cards total more than 21
 //  if so, she should check for a soft hand
@@ -220,3 +269,6 @@ describe('double', function(){
 //game should give chips
 //if not
 //game should remove chips
+
+// take out all if statements.
+// think of actual real-life objects
