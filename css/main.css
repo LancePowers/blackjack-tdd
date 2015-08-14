@@ -1,1 +1,30 @@
 /* add custom styles */
+div{
+  background-color: rgba(255, 0, 0, 0.5);
+  position: absolute;
+}
+.table{
+  z-index: -1;
+}
+.player-bet {
+  top: 555.72;
+  left: 429.5;
+}
+
+.book-bet{
+  top: 546.5;
+  left: 864.50;
+}
+.dealer-cards{
+  height: 150px;
+}
+.players-cards{
+  height: 150px;
+}
+.player-cards{
+  width: 49%;
+  float: right;
+}
+.book-cards{
+  width: 49%;
+}

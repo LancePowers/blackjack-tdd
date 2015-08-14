@@ -68,16 +68,19 @@ Game.prototype.checkBlackJack = function () {
 Game.prototype.dealerBlackJack = function () {
   for (var i = 0; i < this.players.length; i++) {
     if(this.players[i].hands[0].isBlackJack()){
+      this.deactivateHand();
       this.players[i].win(0);
     } else {
       this.players[i].take();
     }
+    this.nextPlayer();
   }
 };
 
 Game.prototype.playerBlackJack = function () {
   for (var i = 0; i < this.players.length; i++) {
     if(this.players[i].hands[0].isBlackJack()){
+      this.deactivateHand();
       this.players[i].win(1.5);
     }
   }
@@ -110,9 +113,13 @@ Game.prototype.double = function () {
 };
 
 Game.prototype.stay = function () {
+  this.deactivateHand();
+  this.endRound();
+};
+
+Game.prototype.deactivateHand = function () {
   var hand = this.activeHands().splice(0,1);
   this.activePlayer().stayHands.push(hand[0]);
-  this.endRound();
 };
 
 Game.prototype.bust = function(){
@@ -144,16 +151,63 @@ Game.prototype.handsRemaining = function () {
 };
 
 Game.prototype.dealerTurn = function () {
-  this.makeDealerActive();
+  this.activateDealer();
   while(this.dealerHand.value() < 17){
     this.hit();
   }
+  this.payout();
 };
 
-Game.prototype.makeDealerActive = function () {
-  this.activeHands = function(){
-    return [this.dealerHand];
+Game.prototype.activateDealer = function () {
+  this.activeHands = function(){return [this.dealerHand];}
+  this.bust = this.dealerBust;
+};
+
+Game.prototype.deactivateDealer = function () {
+  this.activeHands = function() {
+      return this.players[this.active].hands;
+  };
+
+  this.bust = function(){
+    this.activePlayer().take();
+    this.endRound();
   }
+};
+
+Game.prototype.payout = function () {
+  for (var i = 0; i < this.players.length; i++) {
+    this.processHands(this.players[i]);
+  }
+};
+
+Game.prototype.processHands = function (player) {
+  for (var i = 0; i < player.stayHands.length; i++){
+    if(this.playerWins(player)){
+      player.win(1);
+    } else if (this.playerTies(player)) {
+      player.win(0);
+    }
+    // this.deactivateDealer();
+  }
+};
+
+Game.prototype.playerWins = function (player) {
+  if(player.stayHands[0].value() > this.dealerHand.value()){
+    return true;
+  }
+};
+
+Game.prototype.playerTies = function (player) {
+  if(player.stayHands[0].value() === this.dealerHand.value()){
+    return true;
+  }
+};
+
+Game.prototype.dealerBust = function () {
+  for (var i = 0; i < this.dealerHand.cards.length; i++) {
+    this.dealerHand.cards[i].value = 0;
+  }
+  this.payout();
 };
 
 Game.prototype.nextPlayer = function(){

@@ -28,8 +28,8 @@ Player.prototype.hasHand = function () {
 };
 
 Player.prototype.win = function(multiplier){
-    this.chips += this.hands[0].bet * (1 + multiplier);
-    this.take();
+    this.chips += this.stayHands[0].bet * (1 + multiplier);
+    this.stayHands.splice(0,1);
 }
 
 module.exports = Player;
