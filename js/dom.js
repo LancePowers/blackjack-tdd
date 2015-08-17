@@ -5,94 +5,115 @@ function Table(){
     {name:'book', handPosition:1},
     {name:'dealer', handPosition:1}
   ];
+  this.dealOn = false;
+  this.stayOn = false;
+  this.hitOn = false;
+  this.splitOn = false;
 }
 
-//it should show a players hand
+//it should show a players hand -green
 Table.prototype.placeHand = function () {
-    this.placeCard();
-    this.placeCard();
+    this.placeCard(this.renderCard());
+    this.placeCard(this.renderCard());
 };
 
-//it should show the dealers hand
+//it should show the dealers hand -green
 Table.prototype.placeDealerHand = function () {
-  var dealerSpot = $('#dealer-hand * > img').length + 1;
   var cardBack = "<img src = img/card_back.png class = 'card'/>"
-  $('#dealer-hand > .D'+ dealerSpot).append(cardBack);
-  $('#dealer-hand > .D'+ dealerSpot).append(this.renderCard());
+  var cardImage = "<img src = img/"+game.dealerHand.cards[1].image+" class = 'card'/>"
+  $('#dealer-hand-1 > .c1').append(cardBack);
+  $('#dealer-hand-1 > .c2').append(cardImage);
 };
 
-// it should have a button to deal
+// it should have a button to deal -green
 Table.prototype.toggleDeal = function () {
-  $( "#deal-btn" ).on()){
+  if(this.dealOn){
     $( "#deal-btn" ).off();
+    this.dealOn = false;
   } else {
+    this.dealOn = true;
     $( "#deal-btn" ).on('click', function(){ game.deal();})
   }
 };
 
-// it should have a button to hit
+// it should have a button to hit -green
 Table.prototype.toggleHit = function () {
-  $( "#hit-btn" ).on()){
+  if(this.hitOn){
     $( "#hit-btn" ).off();
+    this.hitOn = false;
   } else {
     $( "#hit-btn" ).on('click', function(){ game.hit();})
+    this.hitOn = true;
   }
 };
 
-// it should have a button to split
+// it should have a button to split -green
 Table.prototype.toggleSplit = function () {
-  $( "#split-btn" ).on()){
+  if(this.splitOn){
     $( "#split-btn" ).off();
+    this.splitOn = false;
   } else {
     $( "#split-btn" ).on('click', function(){ game.split();})
+    this.splitOn = true;
   }
 };
 
-// it should have a button to stay
+// it should have a button to stay -green
 Table.prototype.toggleStay = function () {
-  $( "#stay-btn" ).on()){
+  if(this.stayOn){
     $( "#stay-btn" ).off();
+    this.stayOn = false;
   } else {
     $( "#stay-btn" ).on('click', function(){ game.stay();})
+    this.stayOn = true;
   }
 };
 
-//should find the current hand position
-Table.prototype.findCardContainer = function () {
-  var seat = this.seats[game.active].name;
-  var position = this.seats[game.active].position;
-  var spot = this.cardSpot()+1;
-  return $('#'+ seat + '-hand-'+ position + ' > .c'+ spot)
+//should find the current hand container
+Table.prototype.findHandContainer = function (seat) {
+  return '#'+ seat.name + '-hand-'+ seat.handPosition;
 };
 
-//it should find which spot to put the card
-Table.prototype.cardSpot = function (dealer) {
+//it should find the container to place the card in.
+Table.prototype.findCardContainer = function (spot) {
+  return $(this.findHandContainer(this.seats[game.active]) + ' > .c'+ spot)
+};
+
+//it should find which card to place
+Table.prototype.findCard = function () {
   var current = this.seats[game.active];
   return $("#"+current.name+"-hand-"+current.handPosition+" * > img").length;
 };
 
 //it should make the card an element
 Table.prototype.renderCard = function () {
-  var image = game.activeCards()[this.cardSpot()].image;
+  var image = game.activeCards()[this.findCard()].image;
   return "<img src = img/"+image+" class = 'card'/>"
 };
 
 // it should show a card on the table
-Table.prototype.placeCard = function () {
-  var card = this.renderCard();
-  this.findCardContainer().append(card);
+Table.prototype.placeCard = function (card) {
+  this.findCardContainer(this.findCard()+1).append(card);
 };
 
+//should show the dealers down card
+Table.prototype.showDownCards = function () {
+  var cardImage = "<img src = img/"+game.dealerHand.cards[0].image+" class = 'card'/>"
+  $('#dealer-hand-1 > .c1').html(cardImage);
+};
 
+// it should remove cards
+Table.prototype.removeCards = function () {
+  $('#dealer-hand-1 * > img').remove();
+  $('#players-hands * > img').remove();
+};
 
+//it should show split cards
+Table.prototype.placeSplitHands = function () {
+  $(this.findHandContainer() +' * > img').remove();
+  this.placeHand();
+};
 
-
-
-
-
-//// Some may need to go into Game logic
-// it should show hands for 2 players
-// it should clear the hand.
 // it should have a button to double
 // it should have a button to change chips
 // it should show chips for the players

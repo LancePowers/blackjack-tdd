@@ -28,25 +28,25 @@ Book.prototype.doublePlay = function (decision) {
 
 Book.prototype.decide = function () {
   this.updateValues();
-  this.getPlay();
+  return this.getPlay();
 };
 
 Book.prototype.getPlay = function () {
-  var index = this.showing;
-  return getPlaySheet()[index];
+  var index = this.showing - 2;
+  return this.getPlaySheet()[index];
 };
 
 Book.prototype.updateValues = function (first_argument) {
   this.bookValue = game.activeHands()[0].value();
-  this.showing = game.dealerHand.cards[0].value;
+  this.showing = game.dealerHand.cards[1].value;
   this.soft = game.activeHands()[0].hasAce();
   this.pair = game.activeHands()[0].isPair();
 };
 
 Book.prototype.getPlaySheet = function () {
-  if(this.soft){ return this.softPlay; }
-  if(this.pair){ return this.splitPlay; }
-  else{ return this.hardPlay; }
+  if(this.soft){ return this.softPlay(); }
+  if(this.pair){ return this.splitPlay(); }
+  else{ return this.hardPlay(); }
 };
 
 Book.prototype.hardPlay = function(){
@@ -58,7 +58,7 @@ Book.prototype.hardPlay = function(){
     ['h','h','h','h','h','h','h','h','h','h'],
     ['h','h','h','h','h','h','h','h','h','h'],
     ['h','dh','dh','dh','dh','h','h','h','h','h'],
-    ['dh','dh','dh','dh','dh','dh','dh','dh','h','h'],
+    ['dh','dh','dh','dh','dh','dh','dh','dh','h','dh'],
     ['dh','dh','dh','dh','dh','dh','dh','dh','dh','h'],
     ['h','h','s','s','s','h','h','h','h','h'],
     ['s','s','s','s','s','h','h','h','h','h'],
@@ -96,10 +96,12 @@ Book.prototype.splitPlay = function () {
     ['p','p','p','p','p','p','h','h','h','h'],
     ['p','p','p','p','p','p','h','h','h','h'],
     ['h','h','h','p','p','h','h','h','h','h'],
+    ['dh','dh','dh','dh','dh','dh','dh','dh','h','dh'],
     ['p','p','p','p','p','h','h','h','h','h'],
     ['p','p','p','p','p','p','h','h','h','h'],
     ['p','p','p','p','p','p','p','p','p','p'],
     ['p','p','p','p','p','s','p','p','s','s'],
+    ['s','s','s','s','s','s','s','s','s','s'],
     ['p','p','p','p','p','p','p','p','p','p']
   ];
   return strategy[index];
