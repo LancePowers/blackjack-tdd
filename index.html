@@ -9,21 +9,224 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
   <body>
-    <img class="table" src="img/blackjack.jpg" alt="Blackjack Table" />
-    <div class="dealer-cards"></div>
-    <div class="players-cards">
-      <div class="player-cards"></div>
-      <div class="book-cards"></div>
+    <div class="table">
+      <div class="row main-row">
+        <div class="col-md-4"></div>
+        <!-- dealers hand -->
+        <div class="col-md-2">
+          <div class="row" id ="dealer-hand">
+            <div class="col-md-1 D1"></div>
+            <div class="col-md-1 D2"></div>
+            <div class="col-md-1 D3"></div>
+            <div class="col-md-1 D4"></div>
+            <div class="col-md-1 D5"></div>
+            <div class="col-md-1 D6"></div>
+            <div class="col-md-1 D7"></div>
+            <div class="col-md-1 D8"></div>
+            <div class="col-md-1 D9"></div>
+            <div class="col-md-1 D10"></div>
+            <div class="col-md-1 D11"></div>
+            <div class="col-md-1 D12"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Players hands area -->
+      <div class="row payout-row">
+        <div class="col-md-2"></div>
+        <div class="col-md-1 player-pay-1"></div>
+        <div class="col-md-1 player-pay-2"></div>
+        <div class="col-md-1 player-pay-3"></div>
+        <div class="col-md-1 player-pay-4"></div>
+        <div class="col-md-1 book-pay-1"></div>
+        <div class="col-md-1 book-pay-2"></div>
+        <div class="col-md-1 book-pay-3"></div>
+        <div class="col-md-1 book-pay-4"></div>
+        <div class="col-md-2"></div>
+      </div>
+      <div class="row main-row">
+        <div class="col-md-2"></div>
+        <!-- player hands -->
+        <div class="col-md-1">
+          <!-- player hand -->
+          <div class="row" id ="player-hand-1">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <!-- player hand -->
+          <div class="row" id ="player-hand-2">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <!-- player hand -->
+          <div class="row" id ="player-hand-3">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+      <div class="col-md-1">
+        <!-- player hand -->
+        <div class="row" id ="player-hand-4">
+          <div class="col-md-1 c1"></div>
+          <div class="col-md-1 c2"></div>
+          <div class="col-md-1 c3"></div>
+          <div class="col-md-1 c4"></div>
+          <div class="col-md-1 c5"></div>
+          <div class="col-md-1 c6"></div>
+          <div class="col-md-1 c7"></div>
+          <div class="col-md-1 c8"></div>
+          <div class="col-md-1 c9"></div>
+          <div class="col-md-1 c10"></div>
+          <div class="col-md-1 c11"></div>
+          <div class="col-md-1 c12"></div>
+        </div>
     </div>
-    <img src="img/player-bet.png" alt="player bet area" class="player-bet bet" />
-    <img src="img/dealer-bet.png" alt="book bet area" class="book-bet bet" />
+
+        <div class="col-md-1">
+          <!-- Book hand -->
+          <div class="row" id="book-hand-1">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <!-- cook hand -->
+          <div class="row"id="book-hand-2">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <!-- book hand -->
+          <div class="row"id="book-hand-3">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <!-- book hand -->
+          <div class="row" id="book-hand-4">
+            <div class="col-md-1 c1"></div>
+            <div class="col-md-1 c2"></div>
+            <div class="col-md-1 c3"></div>
+            <div class="col-md-1 c4"></div>
+            <div class="col-md-1 c5"></div>
+            <div class="col-md-1 c6"></div>
+            <div class="col-md-1 c7"></div>
+            <div class="col-md-1 c8"></div>
+            <div class="col-md-1 c9"></div>
+            <div class="col-md-1 c10"></div>
+            <div class="col-md-1 c11"></div>
+            <div class="col-md-1 c12"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Betting Area -->
+      <div class="row betting-area main-row">
+        <div class="col-md-3"></div>
+        <div class="col-md-2" id="player-bet">
+          <img src="img/player-bet.png" class = "deep-margin" alt="" />
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-2" id ="book-bet">
+          <img src="img/book-bet.png" class = "deep-margin" alt="" />
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <!-- Chip area -->
+      <div class="row main-row">
+        <div class="col-md-2">
+          <img src="img/deal-up.png" alt="" />
+        </div>
+        <div class="col-md-2" id="player-chips"></div>
+        <div class="col-md-4" id="controls">
+          <img src="img/hit-up.png" alt="" />
+          <img src="img/stay-up.png" alt="" />
+          <img src="img/split-up.png" alt="" />
+        </div>
+        <div class="col-md-3" id="book-chips"></div>
+      </div>
+    </div>
+    <!--
+
+    2
+    4
+    2
+    4
+    2 -->
+
+
+    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/hand.js"></script>
     <script type="text/javascript" src="js/deck.js"></script>
     <script type="text/javascript" src="js/player.js"></script>
-    <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/dom.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
   </body>
 </html>

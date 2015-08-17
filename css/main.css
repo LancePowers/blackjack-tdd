@@ -1,30 +1,18 @@
-/* add custom styles */
-div{
-  background-color: rgba(255, 0, 0, 0.5);
-  position: absolute;
-}
 .table{
-  z-index: -1;
-}
-.player-bet {
-  top: 555.72;
-  left: 429.5;
+  background-image: url(../img/blackjack.jpg);
+  background-repeat: no-repeat;
+  width: 100%
 }
 
-.book-bet{
-  top: 546.5;
-  left: 864.50;
+.main-row{
+  min-height: 200px;
 }
-.dealer-cards{
-  height: 150px;
+
+.card{
+  margin-top: 10px;
+  box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.5);
 }
-.players-cards{
-  height: 150px;
-}
-.player-cards{
-  width: 49%;
-  float: right;
-}
-.book-cards{
-  width: 49%;
+
+.deep-margin{
+  margin: 20px;
 }

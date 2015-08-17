@@ -32,4 +32,4 @@ Player.prototype.win = function(multiplier){
     this.stayHands.splice(0,1);
 }
 
-module.exports = Player;
+// module.exports = Player;

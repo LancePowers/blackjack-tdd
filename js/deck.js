@@ -8,19 +8,19 @@ Card.prototype = new Deck();
 function Deck(){
   this.cards = [];
   this.deckImages = [
-     "ace_of_Spades.svg", "2_of_Spades.svg", "3_of_Spades.svg", "4_of_Spades.svg",
-     "5_of_Spades.svg", "6_of_Spades.svg", "7_of_Spades.svg", "8_of_Spades.svg",
-     "9_of_Spades.svg", "10_of_Spades.svg", "jack_of_Spades.svg", "queen_of_Spades.svg",
-     "king_of_Spades.svg", "ace_of_Hearts.svg", "2_of_Hearts.svg", "3_of_Hearts.svg",
-     "4_of_Hearts.svg", "5_of_Hearts.svg", "6_of_Hearts.svg", "7_of_Hearts.svg",
-     "8_of_Hearts.svg", "9_of_Hearts.svg", "10_of_Hearts.svg", "jack_of_Hearts.svg",
-     "queen_of_Hearts.svg", "king_of_Hearts.svg", "ace_of_Diamonds.svg", "2_of_Diamonds.svg",
-     "3_of_Diamonds.svg", "4_of_Diamonds.svg", "5_of_Diamonds.svg", "6_of_Diamonds.svg",
-     "7_of_Diamonds.svg", "8_of_Diamonds.svg", "9_of_Diamonds.svg", "10_of_Diamonds.svg",
-     "jack_of_Diamonds.svg", "queen_of_Diamonds.svg", "king_of_Diamonds.svg", "ace_of_Clubs.svg",
-     "2_of_Clubs.svg", "3_of_Clubs.svg", "4_of_Clubs.svg", "5_of_Clubs.svg", "6_of_Clubs.svg",
-     "7_of_Clubs.svg", "8_of_Clubs.svg", "9_of_Clubs.svg", "10_of_Clubs.svg", "jack_of_Clubs.svg",
-     "queen_of_Clubs.svg", "king_of_Clubs.svg"
+     "ace_of_Spades.png", "2_of_Spades.png", "3_of_Spades.png", "4_of_Spades.png",
+     "5_of_Spades.png", "6_of_Spades.png", "7_of_Spades.png", "8_of_Spades.png",
+     "9_of_Spades.png", "10_of_Spades.png", "jack_of_Spades.png", "queen_of_Spades.png",
+     "king_of_Spades.png", "ace_of_Hearts.png", "2_of_Hearts.png", "3_of_Hearts.png",
+     "4_of_Hearts.png", "5_of_Hearts.png", "6_of_Hearts.png", "7_of_Hearts.png",
+     "8_of_Hearts.png", "9_of_Hearts.png", "10_of_Hearts.png", "jack_of_Hearts.png",
+     "queen_of_Hearts.png", "king_of_Hearts.png", "ace_of_Diamonds.png", "2_of_Diamonds.png",
+     "3_of_Diamonds.png", "4_of_Diamonds.png", "5_of_Diamonds.png", "6_of_Diamonds.png",
+     "7_of_Diamonds.png", "8_of_Diamonds.png", "9_of_Diamonds.png", "10_of_Diamonds.png",
+     "jack_of_Diamonds.png", "queen_of_Diamonds.png", "king_of_Diamonds.png", "ace_of_Clubs.png",
+     "2_of_Clubs.png", "3_of_Clubs.png", "4_of_Clubs.png", "5_of_Clubs.png", "6_of_Clubs.png",
+     "7_of_Clubs.png", "8_of_Clubs.png", "9_of_Clubs.png", "10_of_Clubs.png", "jack_of_Clubs.png",
+     "queen_of_Clubs.png", "king_of_Clubs.png"
    ];
    this.deckValues = [
      11,2,3,4,5,6,7,8,9,10,10,10,10,
@@ -46,5 +46,5 @@ Deck.prototype.getCard = function(){
   return card[0];
 }
 
-
-module.exports = Deck;
+// 
+// module.exports = Deck;

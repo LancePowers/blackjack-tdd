@@ -1,14 +1,15 @@
-var Player = require('../js/player.js');
-var Hand = require('../js/hand.js');
-var Deck = require('../js/deck.js');
-
-
+// var Player = require('../js/player.js');
+// var Hand = require('../js/hand.js');
+// var Deck = require('../js/deck.js');
+//
+var game = new Game();
 
 function Game(){
   this.deck = new Deck();
   this.players = [];
   this.dealerHand;
   this.active = 0;
+  this.table = new Table();
 }
 
 Game.prototype.sitDown = function(){
@@ -23,6 +24,7 @@ Game.prototype.addPlayer = function(name){
 }
 
 Game.prototype.deal = function() {
+  // this.deactivateDealer();
   this.shuffle();
   this.addHand('D');
   for (var i = 0; i < this.players.length; i++) {
@@ -36,6 +38,10 @@ Game.prototype.deal = function() {
 
 Game.prototype.activeHands = function() {
     return this.players[this.active].hands;
+};
+
+Game.prototype.activeCards = function () {
+    return this.players[this.active].hands[0].cards;
 };
 
 Game.prototype.activePlayer = function(){
@@ -171,7 +177,7 @@ Game.prototype.deactivateDealer = function () {
   this.bust = function(){
     this.activePlayer().take();
     this.endRound();
-  }
+  };
 };
 
 Game.prototype.payout = function () {
@@ -187,7 +193,6 @@ Game.prototype.processHands = function (player) {
     } else if (this.playerTies(player)) {
       player.win(0);
     }
-    // this.deactivateDealer();
   }
 };
 
@@ -218,4 +223,4 @@ Game.prototype.nextPlayer = function(){
   }
 }
 
-module.exports = Game;
+// module.exports = Game;

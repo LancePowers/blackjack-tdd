@@ -48,4 +48,4 @@ Hand.prototype.isPair = function(){
   }
 }
 
-module.exports = Hand;
+// module.exports = Hand;
