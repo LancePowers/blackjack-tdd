@@ -7,6 +7,56 @@ function Table(){
   ];
 }
 
+//it should show a players hand
+Table.prototype.placeHand = function () {
+    this.placeCard();
+    this.placeCard();
+};
+
+//it should show the dealers hand
+Table.prototype.placeDealerHand = function () {
+  var dealerSpot = $('#dealer-hand * > img').length + 1;
+  var cardBack = "<img src = img/card_back.png class = 'card'/>"
+  $('#dealer-hand > .D'+ dealerSpot).append(cardBack);
+  $('#dealer-hand > .D'+ dealerSpot).append(this.renderCard());
+};
+
+// it should have a button to deal
+Table.prototype.toggleDeal = function () {
+  $( "#deal-btn" ).on()){
+    $( "#deal-btn" ).off();
+  } else {
+    $( "#deal-btn" ).on('click', function(){ game.deal();})
+  }
+};
+
+// it should have a button to hit
+Table.prototype.toggleHit = function () {
+  $( "#hit-btn" ).on()){
+    $( "#hit-btn" ).off();
+  } else {
+    $( "#hit-btn" ).on('click', function(){ game.hit();})
+  }
+};
+
+// it should have a button to split
+Table.prototype.toggleSplit = function () {
+  $( "#split-btn" ).on()){
+    $( "#split-btn" ).off();
+  } else {
+    $( "#split-btn" ).on('click', function(){ game.split();})
+  }
+};
+
+// it should have a button to stay
+Table.prototype.toggleStay = function () {
+  $( "#stay-btn" ).on()){
+    $( "#stay-btn" ).off();
+  } else {
+    $( "#stay-btn" ).on('click', function(){ game.stay();})
+  }
+};
+
 //should find the current hand position
 Table.prototype.findCardContainer = function () {
   var seat = this.seats[game.active].name;
@@ -33,19 +83,6 @@ Table.prototype.placeCard = function () {
   this.findCardContainer().append(card);
 };
 
-//it should show a hand on the table
-Table.prototype.placeHand = function (dealer) {
-    this.placeCard();
-    this.placeCard();
-};
-
-//it should show the dealers hand
-Table.prototype.placeDealerHand = function () {
-  var dealerSpot = $('#dealer-hand * > img').length + 1;
-  var cardBack = "<img src = img/card_back.png class = 'card'/>"
-  $('#dealer-hand > .D'+ dealerSpot).append(cardBack);
-  $('#dealer-hand > .D'+ dealerSpot).append(this.renderCard());
-};
 
 
 
@@ -56,10 +93,6 @@ Table.prototype.placeDealerHand = function () {
 //// Some may need to go into Game logic
 // it should show hands for 2 players
 // it should clear the hand.
-// it should have a button to hit
-// it should have a button to stay
-// it should have a button to split
-// it should have a button to deal
 // it should have a button to double
 // it should have a button to change chips
 // it should show chips for the players
