@@ -1,5 +1,5 @@
 .table{
-  background-image: url(../img/blackjack.jpg);
+  background-image: url(../img/blackjack.png);
   background-repeat: no-repeat;
   width: 100%
 }
@@ -15,4 +15,7 @@
 
 .deep-margin{
   margin: 20px;
+}
+.chip{
+  position: absolute;
 }

@@ -22,6 +22,9 @@ Game.prototype.sitDown = function(){
   this.table.toggleDeal();
   this.table.toggleHit();
   this.table.toggleStay();
+  this.table.toggleSplit();
+  this.table.toggleDouble();
+  this.table.droppable();
 }
 
 Game.prototype.addPlayer = function(name){
@@ -49,8 +52,8 @@ Game.prototype.activeHands = function() {
     return this.players[this.active].hands;
 };
 
-Game.prototype.activeCards = function () {
-    return this.activeHands()[0].cards;
+Game.prototype.activeCards = function (i) {
+    return this.activeHands()[i].cards;
 };
 
 Game.prototype.activePlayer = function(){
@@ -96,8 +99,7 @@ Game.prototype.dealerBlackJack = function () {
 Game.prototype.playerBlackJack = function () {
   for (var i = 0; i < this.players.length; i++) {
     if(this.players[i].hands[0].isBlackJack()){
-      this.deactivateHand();
-      this.players[i].win(1.5);
+      this.players[i].blackJack = true;
     }
   }
 };
@@ -106,6 +108,7 @@ Game.prototype.split = function () {
   this.addSecondHand(this.activePlayer());
   this.activeHands()[0].cards.push(this.deck.getCard());
   this.activePlayer().betOnHand(1);
+  this.table.placeSplitHands();
 };
 
 Game.prototype.addSecondHand = function(player){
@@ -118,7 +121,9 @@ Game.prototype.hit = function () {
   this.activeHands()[0].cards.push(
     this.deck.getCard()
   )
-  this.table.placeCard(this.table.renderCard());
+  this.table.placeCard(
+    this.table.renderCard(this.table.findCard())
+  );
   if(this.activeHands()[0].value() > 21){
     this.bust();
   }
@@ -156,6 +161,9 @@ Game.prototype.setActivePlayer = function(){
   for (var i = 0; i < this.players.length; i++) {
     if(this.players[i].hasHand()){
       this.active = i;
+      if(this.players[i].blackJack){
+        this.stay();
+      }
       break;
     }
   }
@@ -202,7 +210,9 @@ Game.prototype.payout = function () {
 
 Game.prototype.processHands = function (player) {
   for (var i = 0; i < player.stayHands.length; i++){
-    if(this.playerWins(player) || this.dealerBust){
+    if(player.blackJack){
+      player.win(1.5);
+    } else if(this.playerWins(player) || this.dealerBust){
       player.win(1);
     } else if (this.playerTies(player)) {
       player.win(0);
@@ -229,6 +239,8 @@ Game.prototype.nextPlayer = function(){
     this.active += 1;
   }
 }
+
 game.sitDown();
+
 
 // module.exports = Game;

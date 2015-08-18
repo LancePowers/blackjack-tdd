@@ -8,6 +8,7 @@ function Player(name){
     this.currentBet = 10;
     this.hands = [];
     this.stayHands = [];
+    this.blackJack = false;
 }
 
 Player.prototype.changeBet = function(newBet) {

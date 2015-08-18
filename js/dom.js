@@ -1,20 +1,24 @@
 
+
 function Table(){
   this.seats = [
     {name:'player', handPosition:1},
     {name:'book', handPosition:1},
     {name:'dealer', handPosition:1}
   ];
+
   this.dealOn = false;
   this.stayOn = false;
   this.hitOn = false;
   this.splitOn = false;
+  this.doubleOn = false;
+  this.changeOn = false;
 }
 
 //it should show a players hand -green
 Table.prototype.placeHand = function () {
-    this.placeCard(this.renderCard());
-    this.placeCard(this.renderCard());
+    this.placeCard(this.renderCard(this.findCard()));
+    this.placeCard(this.renderCard(this.findCard()));
 };
 
 //it should show the dealers hand -green
@@ -33,6 +37,28 @@ Table.prototype.toggleDeal = function () {
   } else {
     this.dealOn = true;
     $( "#deal-btn" ).on('click', function(){ game.deal();})
+  }
+};
+
+//it should have a button to double
+Table.prototype.toggleDouble = function () {
+  if(this.doubleOn){
+    $( "#double-btn" ).off();
+    this.doubleOn = false;
+  } else {
+    $( "#double-btn" ).on('click', function(){ game.double();})
+    this.doubleOn = true;
+  }
+};
+
+//it should have a button to change chips
+Table.prototype.toggleChange = function () {
+  if(this.changeOn){
+    $( "#change-btn" ).off();
+    this.changeOn = false;
+  } else {
+    $( "#change-btn" ).on('click', function(){ game.change();})
+    this.changeOn = true;
   }
 };
 
@@ -86,8 +112,9 @@ Table.prototype.findCard = function () {
 };
 
 //it should make the card an element
-Table.prototype.renderCard = function () {
-  var image = game.activeCards()[this.findCard()].image;
+Table.prototype.renderCard = function (cardIndex,hand) {
+  if(hand === undefined){hand = 0}
+  var image = game.activeCards(hand)[cardIndex].image;
   return "<img src = img/"+image+" class = 'card'/>"
 };
 
@@ -110,14 +137,34 @@ Table.prototype.removeCards = function () {
 
 //it should show split cards
 Table.prototype.placeSplitHands = function () {
-  $(this.findHandContainer() +' * > img').remove();
+  $(this.findHandContainer(this.seats[game.active]) +' * > img').remove();
   this.placeHand();
+  this.seats[game.active].handPosition += 1;
+  var card1 = this.renderCard(0,1);
+  var card2 = this.renderCard(1,1);
+  this.placeCard(card1);
+  this.placeCard(card2);
 };
 
-// it should have a button to double
-// it should have a button to change chips
-// it should show chips for the players
-// it should let you drag the chips
+Table.prototype.droppable = function () {
+  $('#player-bet').droppable({
+    over: function(event,ui){
+      var bet = parseInt(ui.draggable.attr('value'));
+      var value = parseInt($('#player-bet').attr('value'));
+      $('#player-bet').attr('value',(bet + value));
+    },
+    out: function(event,ui){
+      var bet = parseInt(ui.draggable.attr('value'));
+      var value = parseInt($('#player-bet').attr('value'));
+      $('#player-bet').attr('value',(value-bet));
+    },
+  })
+};
+
+
+
+
+
 // it should let you drop chips on the square to bet.
 // it should let you drop chips after the deal.
 // it should require you to drag more chips to split.
