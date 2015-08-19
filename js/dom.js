@@ -6,7 +6,6 @@ function Table(){
     {name:'book', handPosition:1},
     {name:'dealer', handPosition:1}
   ];
-
   this.dealOn = false;
   this.stayOn = false;
   this.hitOn = false;
@@ -14,6 +13,13 @@ function Table(){
   this.doubleOn = false;
   this.changeOn = false;
 }
+
+Table.prototype.alert = function (text,type) {
+  $('#alert-box').html(text);
+  $('#alert-box').addClass('alert close');
+  $('#alert-box').addClass(type);
+  //$('#alert-box').on('click',function(){$('alert-box').removeClass})
+};
 
 //it should show a players hand -green
 Table.prototype.placeHand = function () {
@@ -146,26 +152,14 @@ Table.prototype.placeSplitHands = function () {
   this.placeCard(card2);
 };
 
-Table.prototype.droppable = function () {
-  $('#player-bet').droppable({
-    over: function(event,ui){
-      var bet = parseInt(ui.draggable.attr('value'));
-      var value = parseInt($('#player-bet').attr('value'));
-      $('#player-bet').attr('value',(bet + value));
-    },
-    out: function(event,ui){
-      var bet = parseInt(ui.draggable.attr('value'));
-      var value = parseInt($('#player-bet').attr('value'));
-      $('#player-bet').attr('value',(value-bet));
-    },
-  })
-};
 
 
 
 
+//betAmount
+//alerts and Double
 
-// it should let you drop chips on the square to bet.
+
 // it should let you drop chips after the deal.
 // it should require you to drag more chips to split.
 // it should remove the chips from the box.
