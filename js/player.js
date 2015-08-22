@@ -2,28 +2,33 @@
 // var Hand = require('../js/hand.js');
 // var Deck = require('../js/deck.js');
 
-function Player(name,betId){
+function Player(name){
     this.name = name;
     this.chips = 100;
     this.currentBet = 10;
     this.hands = [];
     this.stayHands = [];
     this.blackJack = false;
-    this.betSquare = new BetSquare(betId);
+    this.betSquare = new BetSquare(name);
 }
 
-Player.prototype.changeBet = function(newBet) {
-  this.currentBet = newBet;
+Player.prototype.showHand = function () {
+  this.assignHandPosition()
+  for (var i = 0; i < this.hands.length; i++) {
+    this.hands[i].show();
+  }
+};
+
+Player.prototype.assignHandPosition = function () {
+  var start = this.stayHands.length;
+  for (var i = start; i < (start + this.hands.length); i++) {
+    this.hands[i-start].setPosition($('#'+this.name+'-hand-'+(i+1)))
+  }
 };
 
 Player.prototype.betSquareDroppable = function () {
   this.betSquare.droppable();
 };
-
-Player.prototype.betOnHand = function(i){
-  this.chips -= this.currentBet;
-  this.hands[i].bet += this.currentBet;
-}
 
 Player.prototype.take = function(){
   this.hands.splice(0,1);

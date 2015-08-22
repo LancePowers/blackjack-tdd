@@ -6,7 +6,39 @@ function Hand(card1,card2){
   this.cards = [card1,card2];
   this.bet = 0;
   this.ace = null;
+  this.position = null;
+  this.dealerDown = null;
+  this.firstDeal = true;
 }
+
+Hand.prototype.setPosition = function (position) {
+  this.position = $(position)[0];
+};
+
+Hand.prototype.show = function (dealer) {
+  if(dealer === 'first'){this.showDealerHand()}
+  else{
+    for (var i = 0; i < this.cards.length; i++) {
+      $(this.position.children[i]).html('').append(this.render(this.cards[i]));
+    }
+  }
+};
+
+Hand.prototype.showDealerHand = function () {
+  this.position = $('#dealer-hand-1')[0];
+  if (this.firstDeal) {
+    this.dealerDown = this.cards[0].image;
+    this.cards[0].image = 'card_back.png'
+    this.firstDeal = false;
+  } else {
+    this.cards[0].image = this.dealerDown;
+  }
+  this.show();
+};
+
+Hand.prototype.render= function (card) {
+  return "<img src = img/"+card.image+" class = 'card'/>"
+};
 
 Hand.prototype.isBlackJack = function(){
   if((this.cards[0].value + this.cards[1].value) === 21){

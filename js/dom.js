@@ -1,9 +1,9 @@
 
 
-function Table(){
+function Table(players){
   this.seats = [
-    {name:'player', handPosition:1},
-    {name:'book', handPosition:1},
+    players[0],
+    players[1],
     {name:'dealer', handPosition:1}
   ];
   this.dealOn = false;
@@ -15,10 +15,15 @@ function Table(){
 }
 
 Table.prototype.alert = function (text,type) {
-  $('#alert-box').html(text);
-  $('#alert-box').addClass('alert close');
-  $('#alert-box').addClass(type);
-  //$('#alert-box').on('click',function(){$('alert-box').removeClass})
+  $('#alert-1').append(this.buildAlert(text,type));
+};
+
+Table.prototype.buildAlert = function (text,type) {
+  var close =
+    "<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>"
+  var message = "<span class ='text-center'>"+text+"</span>"
+  var alert = "<div id='alert-box' class = 'alert "+type+"'>"+close+message+"</div>"
+  return alert;
 };
 
 //it should show a players hand -green
@@ -34,6 +39,59 @@ Table.prototype.placeDealerHand = function () {
   $('#dealer-hand-1 > .c1').append(cardBack);
   $('#dealer-hand-1 > .c2').append(cardImage);
 };
+
+//should find the current hand container
+Table.prototype.findHandContainer = function (seat) {
+  return '#'+ seat.name + '-hand-'+ seat.handPosition;
+};
+
+//it should find the container to place the card in.
+Table.prototype.findCardContainer = function (spot) {
+  return $(this.findHandContainer(this.seats[game.active]) + ' > .c'+ spot)
+};
+
+//it should find which card to place
+Table.prototype.findCard = function () {
+  var current = this.seats[game.active];
+  return $("#"+current.name+"-hand-"+current.handPosition+" * > img").length;
+};
+
+//it should make the card an element
+Table.prototype.renderCard = function (cardIndex,hand) {
+  if(hand === undefined){hand = 0}
+  var image = game.activeCards(hand)[cardIndex].image;
+  return "<img src = img/"+image+" class = 'card'/>"
+};
+
+// it should show a card on the table
+Table.prototype.placeCard = function (card) {
+  this.findCardContainer(this.findCard()+1).append(card);
+};
+
+//should show the dealers down card
+Table.prototype.showDownCards = function () {
+  var cardImage = "<img src = img/"+game.dealerHand.cards[0].image+" class = 'card'/>"
+  $('#dealer-hand-1 > .c1').html(cardImage);
+};
+
+// it should remove cards
+Table.prototype.removeCards = function () {
+  $('#dealer-hand-1 * > img').remove();
+  $('#players-hands * > img').remove();
+};
+
+//it should show split cards
+Table.prototype.placeSplitHands = function () {
+  $(this.findHandContainer(this.seats[game.active]) +' * > img').remove();
+  this.placeHand();
+  this.seats[game.active].handPosition += 1;
+  var card1 = this.renderCard(0,1);
+  var card2 = this.renderCard(1,1);
+  this.placeCard(card1);
+  this.placeCard(card2);
+  this.seats[game.active].handPosition -= 1;
+};
+
 
 // it should have a button to deal -green
 Table.prototype.toggleDeal = function () {
@@ -100,59 +158,6 @@ Table.prototype.toggleStay = function () {
     this.stayOn = true;
   }
 };
-
-//should find the current hand container
-Table.prototype.findHandContainer = function (seat) {
-  return '#'+ seat.name + '-hand-'+ seat.handPosition;
-};
-
-//it should find the container to place the card in.
-Table.prototype.findCardContainer = function (spot) {
-  return $(this.findHandContainer(this.seats[game.active]) + ' > .c'+ spot)
-};
-
-//it should find which card to place
-Table.prototype.findCard = function () {
-  var current = this.seats[game.active];
-  return $("#"+current.name+"-hand-"+current.handPosition+" * > img").length;
-};
-
-//it should make the card an element
-Table.prototype.renderCard = function (cardIndex,hand) {
-  if(hand === undefined){hand = 0}
-  var image = game.activeCards(hand)[cardIndex].image;
-  return "<img src = img/"+image+" class = 'card'/>"
-};
-
-// it should show a card on the table
-Table.prototype.placeCard = function (card) {
-  this.findCardContainer(this.findCard()+1).append(card);
-};
-
-//should show the dealers down card
-Table.prototype.showDownCards = function () {
-  var cardImage = "<img src = img/"+game.dealerHand.cards[0].image+" class = 'card'/>"
-  $('#dealer-hand-1 > .c1').html(cardImage);
-};
-
-// it should remove cards
-Table.prototype.removeCards = function () {
-  $('#dealer-hand-1 * > img').remove();
-  $('#players-hands * > img').remove();
-};
-
-//it should show split cards
-Table.prototype.placeSplitHands = function () {
-  $(this.findHandContainer(this.seats[game.active]) +' * > img').remove();
-  this.placeHand();
-  this.seats[game.active].handPosition += 1;
-  var card1 = this.renderCard(0,1);
-  var card2 = this.renderCard(1,1);
-  this.placeCard(card1);
-  this.placeCard(card2);
-};
-
-
 
 
 

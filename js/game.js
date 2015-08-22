@@ -1,7 +1,6 @@
-// var Player = require('../js/player.js');
-// var Hand = require('../js/hand.js');
-// var Deck = require('../js/deck.js');
-//
+//hand holds information on where it should be shown?
+
+
 var game = new Game();
 
 
@@ -10,15 +9,15 @@ function Game(){
   this.players = [];
   this.dealerHand;
   this.active = 0;
-  this.table = new Table();
+  this.table = new Table(this.players);
   this.dealerBust = false;
   this.book = new Book();
 }
 
 Game.prototype.sitDown = function(){
   //prompt('what\'s your name?');
-  this.addPlayer('Lance','#player-bet');
-  this.addPlayer('Bythe Book','#book-bet');
+  this.addPlayer('player');
+  this.addPlayer('book');
   this.table.toggleDeal();
   this.table.toggleHit();
   this.table.toggleStay();
@@ -40,11 +39,10 @@ Game.prototype.deal = function() {
   this.deactivateDealer();
   this.shuffle();
   this.addHand('D');
-  this.table.placeDealerHand();
+  this.dealerHand.show('first');
   for (var i = 0; i < this.players.length; i++) {
     this.addHand();
-    this.table.placeHand();
-    this.players[i].betOnHand(0);
+    this.players[i].showHand();
     this.nextPlayer();
   }
   this.checkBlackJack();
@@ -112,8 +110,7 @@ Game.prototype.playerBlackJack = function () {
 Game.prototype.split = function () {
   this.addSecondHand(this.activePlayer());
   this.activeHands()[0].cards.push(this.deck.getCard());
-  this.activePlayer().betOnHand(1);
-  this.table.placeSplitHands();
+  this.this.activePlayer().showHand;
 };
 
 Game.prototype.addSecondHand = function(player){
@@ -126,16 +123,13 @@ Game.prototype.hit = function () {
   this.activeHands()[0].cards.push(
     this.deck.getCard()
   )
-  this.table.placeCard(
-    this.table.renderCard(this.table.findCard())
-  );
+  this.activePlayer().showHand();
   if(this.activeHands()[0].value() > 21){
     this.bust();
   }
 };
 
 Game.prototype.double = function () {
-  this.activePlayer().betOnHand(0);
   this.hit();
   this.stay();
 };
@@ -148,6 +142,7 @@ Game.prototype.stay = function () {
 Game.prototype.deactivateHand = function () {
   var hand = this.activeHands().splice(0,1);
   this.activePlayer().stayHands.push(hand[0]);
+  this.activePlayer().handPosition += 1;
 };
 
 Game.prototype.bust = function(){
@@ -183,7 +178,7 @@ Game.prototype.handsRemaining = function () {
 };
 
 Game.prototype.dealerTurn = function () {
-  this.table.showDownCards();
+  this.dealerHand.show();
   this.activateDealer();
   while(this.dealerHand.value() < 17){
     this.hit();

@@ -15,7 +15,7 @@ function Chip(color){
 }
 
 function BetSquare(name){
-  this.name = name;
+  this.name = '#'+name+'-bet';
   this.draggables = [];
 }
 BetSquare.prototype.betAmount = function () {
