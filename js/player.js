@@ -14,8 +14,12 @@ function Player(name){
 
 Player.prototype.showHand = function () {
   this.assignHandPosition()
-  for (var i = 0; i < this.hands.length; i++) {
-    this.hands[i].show();
+  if (this.name === 'dealer'){
+    this.hands[0].showDealerHand();
+  } else {
+    for (var i = 0; i < this.hands.length; i++) {
+      this.hands[i].show();
+    }
   }
 };
 
