@@ -15,7 +15,7 @@ function Chip(color){
 }
 
 function BetSquare(name){
-  this.name = '#'+name+'-bet';
+  this.name = name;
   this.draggables = [];
 }
 BetSquare.prototype.betAmount = function () {
@@ -28,18 +28,19 @@ BetSquare.prototype.betAmount = function () {
 
 BetSquare.prototype.chipsOut = function (multiplier) {
   var chips = this.betAmount()* (1 + multiplier);
+  var payPosition = '#'+this.name+'-pay-1';
   while(chips > 0){
     if(chips >= 1000){
-      $(this.name).append(new Chip('yellow'));
+      $(payPosition).append(new Chip('yellow'));
       chips -= 1000;
     } else if(chips >= 100){
-      $(this.name).append(new Chip('black'));
+      $(payPosition).append(new Chip('black'));
       chips -= 100;
     } else if(chips >= 25){
-      $(this.name).append(new Chip('green'));
+      $(payPosition).append(new Chip('green'));
       chips -= 25;
     } else if(chips >= 5){
-      $(this.name).append(new Chip('red'));
+      $(payPosition).append(new Chip('red'));
       chips -= 5;
     }
   }
@@ -50,19 +51,20 @@ BetSquare.prototype.chipsIn = function () {
     $('#'+this.draggables[i]).remove();
   }
 };
-
+/* sets the bet squares to droppable On drop chips are added to array
+on out chips are removed from array*/
 BetSquare.prototype.droppable = function () {
-  var name = this.name;
-  $(this.name).droppable({
+  var squareName = '#'+this.name+'-bet';
+  $(squareName).droppable({
     over: function(event,ui){
-      if(name === '#player-bet'){
+      if(squareName === '#player-bet'){
         game.players[0].betSquare.draggables.push(ui.draggable.attr('id'));
       } else {
         game.players[1].betSquare.draggables.push(ui.draggable.attr('id'));
       }
     },
     out: function(event,ui){
-      if(name === '#player-bet'){
+      if(squareName === '#player-bet'){
         game.players[0].betSquare.draggables.splice(ui.draggable.attr('id'));
       } else {
         game.players[0].betSquare.draggables.splice(ui.draggable.attr('id'));

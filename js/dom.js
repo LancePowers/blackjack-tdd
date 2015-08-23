@@ -4,7 +4,7 @@ function Table(players){
   this.seats = [
     players[0],
     players[1],
-    {name:'dealer', handPosition:1}
+    players[2]
   ];
   this.dealOn = false;
   this.stayOn = false;
@@ -25,48 +25,6 @@ Table.prototype.buildAlert = function (text,type) {
   var alert = "<div id='alert-box' class = 'alert "+type+"'>"+close+message+"</div>"
   return alert;
 };
-
-// //it should show a players hand -green
-// Table.prototype.placeHand = function () {
-//     this.placeCard(this.renderCard(this.findCard()));
-//     this.placeCard(this.renderCard(this.findCard()));
-// };
-//
-// //it should show the dealers hand -green
-// Table.prototype.placeDealerHand = function () {
-//   var cardBack = "<img src = img/card_back.png class = 'card'/>"
-//   var cardImage = "<img src = img/"+game.dealerHand.cards[1].image+" class = 'card'/>"
-//   $('#dealer-hand-1 > .c1').append(cardBack);
-//   $('#dealer-hand-1 > .c2').append(cardImage);
-// };
-//
-// //should find the current hand container
-// Table.prototype.findHandContainer = function (seat) {
-//   return '#'+ seat.name + '-hand-'+ seat.handPosition;
-// };
-//
-// //it should find the container to place the card in.
-// Table.prototype.findCardContainer = function (spot) {
-//   return $(this.findHandContainer(this.seats[game.active]) + ' > .c'+ spot)
-// };
-
-// //it should find which card to place
-// Table.prototype.findCard = function () {
-//   var current = this.seats[game.active];
-//   return $("#"+current.name+"-hand-"+current.handPosition+" * > img").length;
-// };
-//
-// //it should make the card an element
-// Table.prototype.renderCard = function (cardIndex,hand) {
-//   if(hand === undefined){hand = 0}
-//   var image = game.activeCards(hand)[cardIndex].image;
-//   return "<img src = img/"+image+" class = 'card'/>"
-// };
-//
-// // it should show a card on the table
-// Table.prototype.placeCard = function (card) {
-//   this.findCardContainer(this.findCard()+1).append(card);
-// };
 
 //should show the dealers down card
 Table.prototype.showDownCards = function () {

@@ -7,12 +7,17 @@ function Hand(card1,card2){
   this.bet = 0;
   this.ace = null;
   this.position = null;
+  this.payPosition = null;
   this.dealerDown = null;
   this.firstDeal = true;
 }
 
 Hand.prototype.setPosition = function (position) {
   this.position = $(position)[0];
+};
+
+Hand.prototype.setPayPosition = function (position) {
+  this.payPosition = $(position)[0];
 };
 
 Hand.prototype.show = function (dealer) {
