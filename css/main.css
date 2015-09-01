@@ -7,7 +7,7 @@
 .main-row{
   min-height: 175px;
 }
-.payout-row{
+.payout-row, .pay{
   min-height: 50px;
 }
 .card{

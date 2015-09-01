@@ -1,6 +1,6 @@
-
-function Chip(color){
-  this.chipCount = $('.chip').length;
+//Class constructor for chips. adds value image and unique? id
+function Chip(color,place){
+  this.chipCount = game.chips;
   if(color === 'red'){
     this.image = "<img src ='img/red-chip.png' value=5 id="+this.chipCount+" class = 'chip'/>";
   } else if (color === 'green') {
@@ -10,8 +10,9 @@ function Chip(color){
   } else {
     this.image = "<img src ='img/yellow-chip.png' value = 1000 id="+this.chipCount+" class = 'chip'/>";
   }
-  $('#player-chips').append($(this.image));
+  $(place).append($(this.image));
   $('#'+this.chipCount).draggable();
+  game.chips++;
 }
 
 function BetSquare(name){
@@ -27,20 +28,20 @@ BetSquare.prototype.betAmount = function () {
 };
 
 BetSquare.prototype.chipsOut = function (multiplier) {
-  var chips = this.betAmount()* (1 + multiplier);
+  var chips = this.betAmount()*multiplier;
   var payPosition = '#'+this.name+'-pay-1';
   while(chips > 0){
     if(chips >= 1000){
-      $(payPosition).append(new Chip('yellow'));
+      $(payPosition).append(new Chip('yellow',payPosition));
       chips -= 1000;
     } else if(chips >= 100){
-      $(payPosition).append(new Chip('black'));
+      $(payPosition).append(new Chip('black',payPosition));
       chips -= 100;
     } else if(chips >= 25){
-      $(payPosition).append(new Chip('green'));
+      $(payPosition).append(new Chip('green',payPosition));
       chips -= 25;
     } else if(chips >= 5){
-      $(payPosition).append(new Chip('red'));
+      $(payPosition).append(new Chip('red',payPosition));
       chips -= 5;
     }
   }
@@ -50,25 +51,20 @@ BetSquare.prototype.chipsIn = function () {
   for (var i = 0; i < this.draggables.length; i++) {
     $('#'+this.draggables[i]).remove();
   }
+  this.draggables = [];
 };
 /* sets the bet squares to droppable On drop chips are added to array
 on out chips are removed from array*/
 BetSquare.prototype.droppable = function () {
   var squareName = '#'+this.name+'-bet';
+  var self = this;
   $(squareName).droppable({
-    over: function(event,ui){
-      if(squareName === '#player-bet'){
-        game.players[0].betSquare.draggables.push(ui.draggable.attr('id'));
-      } else {
-        game.players[1].betSquare.draggables.push(ui.draggable.attr('id'));
-      }
+    drop: function(event,ui){
+        self.draggables.push(ui.draggable.attr('id'));
     },
     out: function(event,ui){
-      if(squareName === '#player-bet'){
-        game.players[0].betSquare.draggables.splice(ui.draggable.attr('id'));
-      } else {
-        game.players[0].betSquare.draggables.splice(ui.draggable.attr('id'));
-      }
-    },
+        var position = self.draggables.indexOf(ui.draggable.attr('id'));
+        self.draggables.splice(position,1);
+    }
   })
 };

@@ -7,11 +7,11 @@ var game = new Game();
 function Game(){
   this.deck = new Deck();
   this.players = [];
-  // this.dealerHand();                        //****function this.dealerHand()(return this.players[players.lenght -1]);
   this.active = 0;
   this.table = new Table(this.players);
-  this.dealerBust = false;                //**** stay thes same for now?
+  this.dealerBust = false;
   this.book = new Book();
+  this.chips = 0;
 }
 
 Game.prototype.sitDown = function(){
@@ -44,11 +44,11 @@ Game.prototype.activePlayer = function(){
   return this.players[this.active];
 }
 
-Game.prototype.addPlayer = function(name,betPosition){
-  var player = new Player(name,betPosition);
+Game.prototype.addPlayer = function(name){
+  var player = new Player(name);
   player.betSquareDroppable();
   for (var i = 0; i < 2; i++) {
-    $(betPosition).append(new Chip('red'));
+    $('#'+name+'-chips').append(new Chip('red','#'+name+'-chips'));
   }
   this.players.push(player);
 }
@@ -92,12 +92,13 @@ Game.prototype.checkBlackJack = function () {
 */
 Game.prototype.dealerBlackJack = function () {
   this.players[this.players.length -1].showHand();
-  this.table.alert('Dealer BlackJack','alert-danger');
   for (var i = 0; i < this.players.length-1; i++) {
     if(this.players[i].hands[0].isBlackJack()){
       this.deactivateHand();
       this.players[i].win(0);
+      this.table.alert('Push','alert-warning',this.players[i].name);
     } else {
+      this.table.alert('Dealer BlackJack!','alert-danger',this.players[i].name);
       this.players[i].take();
     }
   }
@@ -109,7 +110,9 @@ Game.prototype.playerBlackJack = function () {
   for (var i = 0; i < this.players.length-1; i++) {
     if(this.players[i].hands[0].isBlackJack()){
       this.players[i].blackJack = true;
-      this.table.alert('BlackJack!','alert-success');
+      var hand = this.players[i].hands.splice(0,1);
+      this.players[i].stayHands.push(hand[0]);
+      this.table.alert('BlackJack!','alert-success',this.players[i].name);
     }
   }
 };
@@ -153,25 +156,24 @@ Game.prototype.deactivateHand = function () {
 };
 
 Game.prototype.bust = function(){
-  if(this.isDealersTurn()){
+  if(this.active == 2){
     this.dealerBust = true;
   } else {
     this.activePlayer().take();
-    this.table.alert('Bust','alert-danger');
+    this.table.alert('Bust','alert-danger',this.activePlayer().name);
     this.endRound();
   }
 }
 
 Game.prototype.endRound = function () { //stay bust blackJack
-  this.nextPlayer();
-  if(this.isDealersTurn()){
-    this.dealerTurn();
-  } else {
+  if(this.activePlayer().hands.length === 0){
+    this.active += 1;
   }
-};
-
-Game.prototype.isDealersTurn = function () {
-  if(this.active === this.players.length - 1 ){return true};
+  if(this.active === 2){
+    this.dealerTurn();
+  } else if(this.active === 1) {
+    this.book.play();
+  }
 };
 
 Game.prototype.dealerTurn = function () {
@@ -182,28 +184,22 @@ Game.prototype.dealerTurn = function () {
   this.payout();
 };
 
-Game.prototype.nextPlayer = function(){
-  if(!this.activePlayer().hasHand()){
-    this.active += 1;
-    if(this.activePlayer().blackJack){
-      this.stay();
-    }
-  }
-};
-
 Game.prototype.processHands = function (player) {
   for (var i = 0; i < player.stayHands.length; i++){
     if(player.blackJack){               //****
       player.win(1.5);
     } else if(this.dealerBust){         //****
       player.win(1);
-      this.table.alert('Dealer Bust!','alert-success');
+      this.table.alert('Dealer Bust!','alert-success',player.name);
     } else if(this.playerWins(player)){
       player.win(1);
-      this.table.alert(player.name + 'Win!','alert-success');
+      this.table.alert(player.name + 'Win!','alert-success',player.name);
     }else if (this.playerTies(player)) {
-      this.table.alert('Push','alert-warning');
-    } else {this.table.alert('Dealer Win','alert-danger');}
+      this.table.alert('Push','alert-warning',player.name);
+    } else {
+      this.table.alert('Dealer Win','alert-danger',player.name);
+      player.take();
+    }
   }
 };
 

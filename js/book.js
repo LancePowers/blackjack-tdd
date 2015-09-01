@@ -9,11 +9,17 @@ Book.prototype.play = function () {
   var decision = this.decide();
   if(decision === 'h'){
     game.hit();
+    this.play();
   }else if(decision === 's'){
     game.stay();
+    console.log('s stay')
   }else if(decision === 'p'){
     game.split();
-  }else { this.doublePlay(decision); }
+    this.play();
+  }else {
+    console.log('double play')
+    this.doublePlay(decision);
+  }
 };
 
 Book.prototype.doublePlay = function (decision) {
@@ -21,24 +27,27 @@ Book.prototype.doublePlay = function (decision) {
     game.double();
   } else if( decision === 'dh'){
     game.hit();
+    this.play();
   } else {
     game.stay();
   }
 };
 
+///////This needs to go!
 Book.prototype.decide = function () {
   this.updateValues();
   return this.getPlay();
 };
 
 Book.prototype.getPlay = function () {
+  this.updateValues();
   var index = this.showing - 2;
   return this.getPlaySheet()[index];
 };
 
-Book.prototype.updateValues = function (first_argument) {
+Book.prototype.updateValues = function () {
   this.bookValue = game.activeHands()[0].value();
-  this.showing = game.dealerHand.cards[1].value;
+  this.showing = game.dealerHand().cards[1].value;
   this.soft = game.activeHands()[0].hasAce();
   this.pair = game.activeHands()[0].isPair();
 };

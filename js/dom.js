@@ -14,8 +14,9 @@ function Table(players){
   this.changeOn = false;
 }
 
-Table.prototype.alert = function (text,type) {
-  $('#alert-1').append(this.buildAlert(text,type));
+Table.prototype.alert = function (text,type,name) {
+  console.log(name)
+  $('#'+name+'-alert').append(this.buildAlert(text,type));
 };
 
 Table.prototype.buildAlert = function (text,type) {
