@@ -13,16 +13,17 @@ function Hand(card1,card2){
 }
 
 Hand.prototype.setPosition = function (position) {
-  this.position = $(position)[0];
+  this.position = (position)[0];
 };
 
 Hand.prototype.setPayPosition = function (position) {
-  this.payPosition = $(position)[0];
+  this.payPosition = (position)[0];
 };
 
 Hand.prototype.show = function (dealer) {
-  if(dealer === 'first'){this.showDealerHand()}
-  else{
+  if(dealer === 'first'){
+    this.showDealerHand();
+  } else {
     for (var i = 0; i < this.cards.length; i++) {
       $(this.position.children[i]).html('').append(this.render(this.cards[i]));
     }

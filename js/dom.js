@@ -37,6 +37,8 @@ Table.prototype.showDownCards = function () {
 Table.prototype.removeCards = function () {
   $('#dealer-hand-1 * > img').remove();
   $('#players-hands * > img').remove();
+  $('#book-alert').html("");
+  $('#player-alert').html("");
 };
 
 //it should show split cards
